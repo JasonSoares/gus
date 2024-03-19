@@ -1,0 +1,18 @@
+FROM node:20
+
+RUN apt-get update && \
+    apt-get install --fix-missing --no-install-recommends -qq -y \
+    build-essential
+
+WORKDIR /app
+
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["npm", "run", "dev"]

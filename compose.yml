@@ -1,0 +1,51 @@
+services:
+  db:
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5532:5432"
+    image: postgres:16.2
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - '4005:4005'
+    volumes:
+      - ./api:/app
+      - api_build:/app/_build
+      - type: volume
+        source: shell_history
+        target: /tmp/iex_history
+    depends_on:
+      - db
+    environment:
+      ERL_AFLAGS: -kernel shell_history enabled -kernel shell_history_path '"/tmp/iex_history"'
+      DATABASE_URL: postgres://postgres:postgres@db:5432/gus_dev
+      MIX_ENV: dev
+    command: bash -c "iex -S mix phx.server"
+    stdin_open: true
+    tty: true
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3005:3005'
+    volumes:
+      - ./web:/app
+
+volumes:
+  db-data:
+    driver: local
+  api_build:
+    driver: local
+  shell_history:

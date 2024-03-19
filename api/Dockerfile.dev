@@ -1,0 +1,28 @@
+FROM elixir:1.16.2
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -qq -y inotify-tools
+
+ENV MIX_ENV=dev \
+    TEST=1 \
+    LANG=C.UTF-8
+
+# Install hex (currently from github due to an issue on Apple Silicon) and rebar
+# (see: https://github.com/erlang/otp/issues/8238)
+RUN mix archive.install github hexpm/hex branch latest --force && \
+    mix local.rebar --force
+
+# Copy over all necessary application files and directories
+COPY mix.exs .
+COPY mix.lock .
+
+# Fetch the application dependencies and build the application
+RUN mix deps.get
+RUN mix deps.compile
+
+COPY . .
+
+EXPOSE 4000
+
+CMD ["iex", "-S", "mix", "phx.server"]

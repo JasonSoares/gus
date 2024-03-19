@@ -1,0 +1,11 @@
+/_build
+/deps
+/.elixir_ls
+/.eunit
+/.git
+/.github
+/.mix
+/.tool-versions
+/cover
+/priv/static
+/tmp
