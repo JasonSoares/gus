@@ -1,8 +1,10 @@
 defmodule GUS.SlugTest do
-  use ExUnit.Case
+  @moduledoc false
+
+  use ExUnit.Case, async: true
 
   test "generates a random slug of a given length" do
-    assert String.length(GUS.Slug.random(6)) == 6
+    assert String.length(GUS.Slug.random(20)) == 20
   end
 
   test "raises an error if the length is less than 6" do

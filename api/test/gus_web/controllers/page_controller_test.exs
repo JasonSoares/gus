@@ -1,5 +1,5 @@
 defmodule GUSWeb.PageControllerTest do
-  use GUSWeb.ConnCase
+  use GUSWeb.ConnCase, async: true
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

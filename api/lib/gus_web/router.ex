@@ -21,9 +21,11 @@ defmodule GUSWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GUSWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", GUSWeb do
+    pipe_through :api
+
+    resources "/links", LinkController, only: [:index, :show, :create, :delete]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:gus, :dev_routes) do

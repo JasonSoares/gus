@@ -9,6 +9,8 @@ defmodule GUS.Slug do
   Generates a random slug of a given length.
   """
   @spec random(integer) :: String.t() | ArgumentError.t()
+  def random(length \\ @mininum_length)
+
   def random(length) when length >= @mininum_length do
     # Extra bytes to allow us to replace the non-alphanumeric characters and still end up with a minimal length.
     :crypto.strong_rand_bytes(length * 2)
