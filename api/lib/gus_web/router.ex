@@ -12,6 +12,13 @@ defmodule GUSWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: GUSWeb.ApiSpec
+  end
+
+  scope "/" do
+    pipe_through :browser
+
+    get "/api", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi"
   end
 
   scope "/", GUSWeb do
@@ -21,10 +28,16 @@ defmodule GUSWeb.Router do
   end
 
   # Other scopes may use custom stacks.
+  scope "/api" do
+    pipe_through :api
+
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, []
+  end
+
   scope "/api", GUSWeb do
     pipe_through :api
 
-    resources "/links", LinkController, only: [:index, :show, :create, :delete]
+    resources "/links", LinkController, only: [:index, :show, :create]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

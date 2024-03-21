@@ -22,7 +22,7 @@ config :gus, GUSWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4005],
   check_origin: false,
   code_reloader: true,
-  debug_errors: true,
+  debug_errors: false,
   secret_key_base: "QtJJCbkqn6fzLm9MPdf9CoeNwn02H/g23JSRT9x9wLQC1t4bTDC70S3iNlxfyB/u",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:gus, ~w(--sourcemap=inline --watch)]},
@@ -80,3 +80,5 @@ config :phoenix_live_view, :debug_heex_annotations, true
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache
