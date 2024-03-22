@@ -23,10 +23,15 @@ down:
 restart: down up
 
 # Run the tests
-test:
-	@echo "🧪 Running tests ..."
+test-api:
+	@echo "🧪 testing api ..."
 	docker compose run --rm -e MIX_ENV=test api mix test
+
+test-web:
+	@echo "🕸️ testing web ..."
 	docker compose run --rm web npm run test
+
+test: test-api test-web
 
 # Run the api container and open a bash shell
 api-shell:
