@@ -28,7 +28,7 @@ up:
 	docker compose up -d
 	@echo "If successful:"
 	@echo "  - access the web application at http://localhost:3005"
-	@echo "  - access the api documentation at http://localhost:4000/api"
+	@echo "  - access the api documentation at http://localhost:4005/api"
 
 # Stop the application
 down:
@@ -56,3 +56,23 @@ api-shell:
 # Run the web container and open a bash shell
 web-shell:
 	docker compose run --rm web bash
+
+# requires having wrk installed!
+# make benchmark slug=abc123
+
+# To control duration (e.g. 5 seconds instead of 30 seconds).
+# make benchmark slug=abc123 duration=5s
+duration ?= 30s
+
+benchmark: require-wrk require-slug
+	@echo "🔥 Benchmarking ..."
+	wrk -s wrk.lua -t12 -c40 -d${duration} http://localhost:4005/api/links/${slug}/visits
+
+require-slug:
+ifndef slug
+	@echo "🚨 Usage: make benchmark slug=abc123"
+	$(error Usage: "make benchmark slug=abc123")
+endif
+
+require-wrk:
+	@which wrk > /dev/null || { echo "🚨 Error: `wrk` command not found in PATH"; exit 1; }
