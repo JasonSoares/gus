@@ -6,7 +6,7 @@ function RootLayout() {
     <div className="bg-indigo-100">
       <Header />
       <main className="min-h-screen">
-        <div className="max-w-lg m-auto">
+        <div className="max-w-3xl m-auto">
           <Outlet />
         </div>
       </main>

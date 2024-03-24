@@ -1,17 +1,11 @@
 import { useState } from 'react'
 import UrlForm, { FormFields } from '../components/UrlForm'
-import { FormMode } from '../types/UrlForm'
+import { FormMode } from '../types/UrlForm.ts'
 import { useForm } from 'react-hook-form'
 import { createShortUrl } from '../services/api'
 import Alert from '../components/Alert'
-
-function buildShortUrl(slug: string) {
-  return `${window.location.origin}/${slug}`
-}
-
-function alreadyShortUrl(url: string) {
-  return url.startsWith(window.location.origin)
-}
+import { isLink } from '../types/Link.ts'
+import { alreadyShortUrl, buildShortUrl } from '../services/url.ts'
 
 function App() {
   const [showAlert, setShowAlert] = useState(false)
@@ -66,7 +60,7 @@ function App() {
       try {
         const { data } = await createShortUrl(url)
 
-        if (!data?.slug) {
+        if (!data || !isLink(data)) {
           showErrorAlert('Failed to shorten URL')
           return
         }

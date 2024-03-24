@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createVisit } from "../services/api";
 import { useParams } from "react-router-dom";
+import { isVisit } from "../types/Visit";
 
 type PageState = "loading" | "error" | "success";
 
@@ -30,16 +31,15 @@ function Visit() {
 
     try {
       const { data } = await createVisit(slug);
-      const url = data?.url;
 
-      if (!url) {
+      if (!data || !isVisit(data)) {
         setPageState('error');
         return;
       }
 
-      setUrl(url);
+      setUrl(data.url);
       setPageState('success');
-      setTimeout(() => window.location.replace(url));
+      setTimeout(() => window.location.replace(data.url));
     } catch {
       setPageState('error');
     }

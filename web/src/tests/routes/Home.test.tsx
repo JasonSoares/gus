@@ -1,13 +1,13 @@
 import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import App from '../routes/Home.tsx'
-import { createShortUrl } from '../services/api.ts'
+import App from '../../routes/Home.tsx'
+import { createShortUrl } from '../../services/api.ts'
 
 const setup = () => render(<App />)
 
-vi.mock('../services/api.ts', async (importOriginal) => {
-  const mod = await importOriginal<typeof import('../services/api.ts')>()
+vi.mock('../../services/api.ts', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('../../services/api.ts')>()
   return {
     ...mod,
     createShortUrl: vi.fn().mockResolvedValue({ slug: 'abc123' })
@@ -75,7 +75,8 @@ describe('<Home />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.example.com'
+            url: 'https://www.example.com',
+            visit_count: 0
           }
         })
       )
@@ -113,7 +114,8 @@ describe('<Home />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.example.com'
+            url: 'https://www.example.com',
+            visit_count: 0
           }
         })
       )
@@ -146,7 +148,8 @@ describe('<Home />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.example.com'
+            url: 'https://www.example.com',
+            visit_count: 0
           }
         })
       )
