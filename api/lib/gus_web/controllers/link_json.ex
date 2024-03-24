@@ -19,7 +19,8 @@ defmodule GUSWeb.LinkJSON do
     %{
       id: link.id,
       url: link.url,
-      slug: link.slug
+      slug: link.slug,
+      visit_count: link.visit_count
     }
   end
 end

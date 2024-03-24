@@ -50,7 +50,8 @@ defmodule GUSWeb.Schemas do
         "data" => %{
           "id" => 1,
           "slug" => "elixir",
-          "url" => "https://elixir-lang.org/"
+          "url" => "https://elixir-lang.org/",
+          "visit_count" => 42
         }
       },
       "x-struct": __MODULE__
@@ -70,14 +71,41 @@ defmodule GUSWeb.Schemas do
           %{
             "id" => 1,
             "slug" => "elixir",
-            "url" => "https://elixir-lang.org/"
+            "url" => "https://elixir-lang.org/",
+            "visit_count" => 100
           },
           %{
             "id" => 2,
             "slug" => "phoenix",
-            "url" => "https://www.phoenixframework.org/"
+            "url" => "https://www.phoenixframework.org/",
+            "visit_count" => 42
           }
         ]
+      },
+      "x-struct": __MODULE__
+    })
+  end
+
+  defmodule VisitResponse do
+    OpenApiSpex.schema(%{
+      title: "VisitResponse",
+      description: "The response to a successful visit creation",
+      type: :object,
+      properties: %{
+        data: %Schema{type: :object, properties: %{
+          visit: %Schema{type: :object, properties: %{
+            id: %Schema{type: :integer, description: "The unique identifier of the visit"},
+            url: %Schema{type: :string, description: "The URL to which the visit was made"},
+          }}
+        }}
+      },
+      example: %{
+        "data" => %{
+          "visit" => %{
+            "id" => 1,
+            "url" => "https://elixir-lang.org/"
+          }
+        }
       },
       "x-struct": __MODULE__
     })

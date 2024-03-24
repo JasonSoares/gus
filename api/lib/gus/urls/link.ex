@@ -9,6 +9,7 @@ defmodule GUS.Urls.Link do
   schema "links" do
     field(:url, :string)
     field(:slug, :string)
+    field(:visit_count, :integer, default: 0)
 
     timestamps(type: :utc_datetime)
   end

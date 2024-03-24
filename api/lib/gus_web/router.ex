@@ -37,7 +37,9 @@ defmodule GUSWeb.Router do
   scope "/api", GUSWeb do
     pipe_through :api
 
-    resources "/links", LinkController, only: [:index, :show, :create]
+    resources "/links", LinkController, only: [:index, :show, :create], param: "slug" do
+      resources "/visits", VisitController, only: [:create]
+    end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

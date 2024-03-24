@@ -31,7 +31,7 @@ defmodule GUSWeb.LinkController do
   operation :show,
     summary: "Get a short link",
     parameters: [
-      id: [
+      slug: [
         in: :path,
         type: %Schema{type: :string},
         description: "The short slug of the link",
@@ -44,7 +44,7 @@ defmodule GUSWeb.LinkController do
       not_found: {"NotFound", "application/json", OpenApiSpex.JsonErrorResponse}
     }
 
-  def show(conn, %{"id" => slug}) do
+  def show(conn, %{"slug" => slug}) do
     link = Urls.get_by_slug!(slug)
     render(conn, :show, link: link)
   end

@@ -7,6 +7,7 @@ defmodule GUS.Urls do
 
   alias GUS.Repo
   alias GUS.Urls.Link
+  alias GUS.Urls.Visit
 
   @doc """
   Returns the list of links.
@@ -39,6 +40,16 @@ defmodule GUS.Urls do
   def create_link(attrs \\ %{}) do
     %Link{}
     |> Link.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a visit for a link.
+  """
+  @spec create_visit(Link.t()) :: {:ok, GUS.Urls.Visit.t()} | {:error, Ecto.Changeset.t()}
+  def create_visit(%Link{} = link) do
+    %Visit{link_id: link.id}
+    |> Visit.changeset(%{})
     |> Repo.insert()
   end
 

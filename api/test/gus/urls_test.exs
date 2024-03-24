@@ -47,6 +47,26 @@ defmodule GUS.UrlsTest do
       assert {:error, %Ecto.Changeset{}} = Urls.create_link(@invalid_attrs)
     end
 
+    test "create_visit/1 creates a visit for the link" do
+      link = link_fixture()
+      assert {:ok, %Urls.Visit{}} = Urls.create_visit(link)
+    end
+
+    test "create_visit/1 increments the visit_count for the link" do
+      link = link_fixture()
+      assert link.visit_count == 0
+
+      Urls.create_visit(link)
+      assert Urls.get_by_slug!(link.slug).visit_count == 1
+
+      Urls.create_visit(link)
+      assert Urls.get_by_slug!(link.slug).visit_count == 2
+    end
+
+    test "create_visit/1 returns error changeset if link does not exists" do
+      assert {:error, %Ecto.Changeset{}} = Urls.create_visit(%Link{id: 0})
+    end
+
     test "delete_link/1 deletes the link" do
       link = link_fixture()
       assert {:ok, %Link{}} = Urls.delete_link(link)
