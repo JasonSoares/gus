@@ -1,8 +1,8 @@
 import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import App from '../App'
-import { createShortUrl } from '../services/api'
+import App from '../routes/Home.tsx'
+import { createShortUrl } from '../services/api.ts'
 
 const setup = () => render(<App />)
 
@@ -16,13 +16,7 @@ vi.mock('../services/api.ts', async (importOriginal) => {
 
 const mockCreateShortUrl = vi.mocked(createShortUrl)
 
-describe('<App />', () => {
-  it('renders the app', () => {
-    const { getByText } = setup()
-    const linkElement = getByText('GUS URL Shortener')
-    expect(linkElement).toBeInTheDocument()
-  })
-
+describe('<Home />', () => {
   it('renders the form', () => {
     const { getByLabelText, getByRole } = setup()
 
@@ -38,7 +32,7 @@ describe('<App />', () => {
     it('renders an alert when the url is invalid', async () => {
       const { getByLabelText, getByRole, findByText } = setup()
 
-      await userEvent.type(getByLabelText('Enter a url'), 'www.stord.com')
+      await userEvent.type(getByLabelText('Enter a url'), 'www.example.com')
       userEvent.click(getByRole('button', { name: 'Shorten' }))
 
       const alertElement = await findByText('Please enter a valid URL starting with http:// or https://')
@@ -81,19 +75,19 @@ describe('<App />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.stord.com/inventory-planning'
+            url: 'https://www.example.com'
           }
         })
       )
 
-      await userEvent.type(getByLabelText('Enter a url'), 'https://www.stord.com/inventory-planning')
+      await userEvent.type(getByLabelText('Enter a url'), 'https://www.example.com')
       userEvent.click(getByRole('button', { name: 'Shorten' }))
 
       await waitFor(() => {
         expect(getByText('Shortened URL created!')).toBeInTheDocument()
       })
 
-      expect(mockCreateShortUrl).toHaveBeenCalledWith('https://www.stord.com/inventory-planning')
+      expect(mockCreateShortUrl).toHaveBeenCalledWith('https://www.example.com')
     })
 
     it('renders an error alert when the short url cannot be created', async () => {
@@ -101,14 +95,14 @@ describe('<App />', () => {
 
       mockCreateShortUrl.mockRejectedValue(new Error('Failed to create short URL'))
 
-      await userEvent.type(getByLabelText('Enter a url'), 'https://www.stord.com/inventory-planning')
+      await userEvent.type(getByLabelText('Enter a url'), 'https://www.example.com')
       userEvent.click(getByRole('button', { name: 'Shorten' }))
 
       await waitFor(() => {
         expect(getByText('Failed to shorten URL')).toBeInTheDocument()
       })
 
-      expect(mockCreateShortUrl).toHaveBeenCalledWith('https://www.stord.com/inventory-planning')
+      expect(mockCreateShortUrl).toHaveBeenCalledWith('https://www.example.com')
     })
 
     it('allows the user to copy the short url to the clipboard', async () => {
@@ -119,7 +113,7 @@ describe('<App />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.stord.com/warehouse-management-system'
+            url: 'https://www.example.com'
           }
         })
       )
@@ -130,7 +124,7 @@ describe('<App />', () => {
         }
       })
 
-      await userEvent.type(getByLabelText('Enter a url'), 'https://www.stord.com/warehouse-management-system')
+      await userEvent.type(getByLabelText('Enter a url'), 'https://www.example.com')
       userEvent.click(getByRole('button', { name: 'Shorten' }))
 
       await waitFor(() => {
@@ -152,7 +146,7 @@ describe('<App />', () => {
           data: {
             id: 42,
             slug: 'abc123',
-            url: 'https://www.stord.com/warehouse-management-system'
+            url: 'https://www.example.com'
           }
         })
       )
@@ -163,7 +157,7 @@ describe('<App />', () => {
         }
       })
 
-      await userEvent.type(getByLabelText('Enter a url'), 'https://www.stord.com/warehouse-management-system')
+      await userEvent.type(getByLabelText('Enter a url'), 'https://www.example.com')
       userEvent.click(getByRole('button', { name: 'Shorten' }))
 
       await waitFor(() => {

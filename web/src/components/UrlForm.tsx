@@ -44,9 +44,9 @@ function UrlForm({
   const { isSubmitting, errors } = formState
 
   return (
-    <form className="w-full max-w-lg m-auto py-10 mt-10 px-10 border shadow-md bg-white" onSubmit={handleSubmit(submitHandler)}>
-      <div className="flex items-center border-2 border-indigo-500 rounded mb-1">
-        <input className="appearance-none border-none w-full text-gray-800  py-4 px-4 leading-tight focus:outline-none flex-grow"
+    <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+      <div className="flex items-center border-2 border-indigo-700 rounded">
+        <input className=" w-full text-gray-800 px-3 leading-tight focus:outline-none"
           type="text"
           aria-label="Enter a url"
           aria-invalid={fieldState.error ? 'true' : 'false'}
@@ -58,14 +58,16 @@ function UrlForm({
           }}
           placeholder="https://www.example.com"
         />
-        <button disabled={isSubmitting} type="submit" className="flex-shring-0 flex-grow-0 basis-1/4 disabled:opacity-50 bg-indigo-700 hover:bg-indigo-500 border-indigo-500 hover:border-indigo-700 text-white py-4 px-2">
+        <button disabled={isSubmitting} type="submit" className="disabled:opacity-50 bg-indigo-700 hover:bg-indigo-500 border-indigo-500 hover:border-indigo-700 text-white py-2 px-6">
           {isSubmitting ? '...' : mode =='shorten' ? 'Shorten' : 'Copy'}
         </button>
       </div>
 
-      <Alert show={!!errors.url}
-        onClose={() => clearErrors()}
-        type="error" message={errors?.url?.message?.toString() || 'Please enter a valid URL starting with http:// or https://'} />
+      <div className="my-1">
+        <Alert show={!!errors.url}
+          onClose={() => clearErrors()}
+          type="error" message={errors?.url?.message?.toString() || 'Please enter a valid URL starting with http:// or https://'} />
+      </div>
     </form>
   )
 }

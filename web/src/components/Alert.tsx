@@ -13,15 +13,15 @@ function Alert({ type, message, show, onClose }: Props) {
   return (
     show && (
       <div
-        className={`flex justify-between items-center px-4 py-3 ${backgroundColor} ${textColor} border ${borderColor} rounded relative`}
+        className={`flex transition justify-between items-center px-4 py-1 ${backgroundColor} ${textColor} border ${borderColor} rounded`}
         role="alert"
       >
-        <strong>{message}</strong>
+        {message}
         <button
           type="button"
           aria-label="Close"
           onClick={() => onClose()}
-          className="text-2xl font-bold"
+          className="text-xl font-bold"
         >
           &times;
         </button>

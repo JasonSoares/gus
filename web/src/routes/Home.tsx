@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import Header from './components/Header'
-import UrlForm, { FormFields } from './components/UrlForm'
-import { FormMode } from './types/UrlForm'
+import UrlForm, { FormFields } from '../components/UrlForm'
+import { FormMode } from '../types/UrlForm'
 import { useForm } from 'react-hook-form'
-import { createShortUrl } from './services/api'
-import Alert from './components/Alert'
+import { createShortUrl } from '../services/api'
+import Alert from '../components/Alert'
 
 function buildShortUrl(slug: string) {
   return `${window.location.origin}/${slug}`
@@ -67,7 +66,7 @@ function App() {
       try {
         const { data } = await createShortUrl(url)
 
-        if (!data) {
+        if (!data?.slug) {
           showErrorAlert('Failed to shorten URL')
           return
         }
@@ -92,9 +91,7 @@ function App() {
   }
 
   return (
-    <div className="bg-indigo-100 min-h-screen">
-      <Header />
-      <Alert type={alertType} message={alertMessage} show={showAlert} onClose={() => setShowAlert(false)} />
+    <div className="w-full mt-4 py-10 px-10 border shadow-md bg-white">
       <UrlForm
         handleSubmit={handleSubmit}
         control={control}
@@ -103,6 +100,8 @@ function App() {
         inputChanged={inputChanged}
         clearErrors={clearErrors}
       />
+
+      <Alert type={alertType} message={alertMessage} show={showAlert} onClose={() => setShowAlert(false)} />
     </div>
   )
 }
