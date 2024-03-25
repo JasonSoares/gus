@@ -1,0 +1,119 @@
+name: Verify API
+on: [push, workflow_dispatch, workflow_call]
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: ["1.16.2"]
+        otp: ["26"]
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Retrieve Cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            api/deps
+            api/_build
+          key: ${{ runner.os }}-ubuntu-latest-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('api/mix.lock') }}
+      - name: Install dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        env:
+          MIX_ENV: test
+        run: |
+          mkdir -p priv/plts
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+          mix deps.compile
+          mix dialyzer --plt
+
+  static-analysys:
+    runs-on: ubuntu-latest
+    needs: dependencies
+    strategy:
+      matrix:
+        elixir: ["1.16.2"]
+        otp: ["26"]
+    defaults:
+      run:
+        working-directory: ./api
+    env:
+      MIX_ENV: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Retrieve Cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            api/deps
+            api/_build
+          key: ${{ runner.os }}-ubuntu-latest-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('api/mix.lock') }}
+      - name: Run Compiler checks
+        run: mix compile --warnings-as-errors --force
+      - name: Run formatter
+        run: mix format --check-formatted
+      - name: Run credo
+        run: mix credo
+      - name: Run dialyzer
+        run: mix dialyzer --no-check --ignore-exit-status --format github --quiet
+
+  test:
+    runs-on: ubuntu-latest
+    needs: dependencies
+    strategy:
+      matrix:
+        elixir: ["1.16.2"]
+        otp: ["26"]
+    defaults:
+      run:
+        working-directory: ./api
+    services:
+      db:
+        image: postgres:16
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Retrieve Cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            api/deps
+            api/_build
+          key: ${{ runner.os }}-ubuntu-latest-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('api/mix.lock') }}
+      - name: Run tests
+        env:
+          MIX_ENV: test
+        run: mix test --trace --slowest 10

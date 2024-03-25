@@ -5,13 +5,22 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :gus, GUS.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "db",
-  database: "gus_test#{System.get_env("MIX_TEST_PARTITION")}",
-  pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
+if config_env() == :test do
+  hostname =
+    if System.get_env("CI") do
+      "localhost"
+    else
+      "db"
+    end
+
+  config :gus, GUS.Repo,
+    username: "postgres",
+    password: "postgres",
+    hostname: hostname,
+    database: "gus_test#{System.get_env("MIX_TEST_PARTITION")}",
+    pool: Ecto.Adapters.SQL.Sandbox,
+    pool_size: System.schedulers_online() * 2
+end
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
