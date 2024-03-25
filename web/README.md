@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# GUS URL Shortener - Web UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React application written in TypeScript and uses Tailwind CSS for styling. It uses Vite to build the project and uses its dev server to run the project locally in preview mode. Tests are written using the Vitest framework along with Testing Library for React and JSDom. Other libraries used in this project include [React Hook Form](https://github.com/react-hook-form/react-hook-form), and React Router.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+See the [README](../README.md) in the root of the project for instructions on how to get the project up and running.
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Creating a Shortened URL
 
-- Configure the top-level `parserOptions` property like this:
+Once the project is running, open a browser to [http://localhost:3006](http://localhost:3006). You will see a form that allows you to enter a URL to shorten. The form will validate the URL to ensure that it starts with `http://` or `https://` and that it contains a domain. It will also check if the URL appears to already be shortened, and if so, it will not shorten it again.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+![Home page](./docs/assets/gus-home-blank.png)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Once you enter a valid URL, click the `Shorten` button. The form will switch to `copy` mode, and the shortened URL will be displayed in the form. You can click the `Copy` button to copy the shortened URL to the clipboard.
+
+![Short URL created](./docs/assets/gus-home-url-shortened.png)
+
+Once the URL has been copied, you can open it in the browser and it should automatically redirect you to the original URL.
+
+### Viewing the Statistics
+
+This project also provides a view of the shortened URLs and the number of times each URL has been visited. You can click on the `Stats` link in the header to view the analytics page.
+
+![Analytics page](./docs/assets/gus-stats-page.png)
+
+Users can also download a CSV with the data in the table from this page.
