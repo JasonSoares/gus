@@ -14,14 +14,11 @@ defmodule GUSWeb.LinkController do
 
   tags ["links"]
 
-  operation :delete, false
-
   operation :index,
     summary: "List short links",
-    description: "List all the short links",
-    responses: %{
-      ok: {"Link", "application/json", [Schemas.LinksResponse]}
-    }
+    responses: [
+      ok: {"Links", "application/json", Schemas.LinksResponse}
+    ]
 
   def index(conn, _params) do
     links = Urls.list_links()
