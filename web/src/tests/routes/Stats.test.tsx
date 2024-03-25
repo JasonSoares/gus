@@ -45,11 +45,13 @@ describe('<Stats />', () => {
   it('renders a message if the data is empty', async () => {
     mockGetStats.mockResolvedValueOnce({ data: [] })
 
-    const { getByText } = setup()
+    const { getByText, queryByRole } = setup()
 
     await waitFor(() => {
       expect(getByText('No short URLs yet.', {exact: false})).toBeInTheDocument()
     })
+
+    expect(queryByRole('link', {name: 'Download CSV'})).not.toBeInTheDocument()
   })
 
   it('renders a messages if there is an error fetching the data', async () => {
