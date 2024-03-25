@@ -9,6 +9,11 @@ export default defineConfig({
     strictPort: true,
     host: true
   },
+  preview: {
+    port: 3006,
+    strictPort: true,
+    host: true
+  },
   test: {
     environment: 'jsdom',
     globals: true,

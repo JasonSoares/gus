@@ -83,4 +83,4 @@ config :swoosh, :api_client, false
 
 config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache
 
-config :cors_plug, origin: ["http://localhost:3005"]
+config :cors_plug, origin: ["http://localhost:3005", "http://localhost:3006"]
