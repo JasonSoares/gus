@@ -5,6 +5,15 @@ defmodule GUS.Urls.Link do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+          id: integer(),
+          url: String.t(),
+          slug: String.t(),
+          visit_count: integer(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
+
   @derive {Phoenix.Param, key: :slug}
   schema "links" do
     field(:url, :string)

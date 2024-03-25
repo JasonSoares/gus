@@ -8,6 +8,13 @@ defmodule GUS.Urls.Visit do
 
   alias GUS.Urls.Link
 
+  @type t :: %__MODULE__{
+          id: integer(),
+          link_id: integer(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
+
   schema "visits" do
     belongs_to(:link, GUS.Urls.Link)
 
