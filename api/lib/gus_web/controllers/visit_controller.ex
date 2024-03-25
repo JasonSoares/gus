@@ -33,6 +33,7 @@ defmodule GUSWeb.VisitController do
 
   def create(conn, %{"link_slug" => link_slug}) do
     link = Urls.get_by_slug!(link_slug)
+
     with {:ok, %Visit{} = visit} <- Urls.create_visit(link) do
       conn
       |> put_status(:created)

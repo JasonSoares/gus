@@ -27,7 +27,7 @@ up:
 	@echo "🚀 Launching the application ..."
 	docker compose up -d
 	@echo "If successful:"
-	@echo "  - access the web application at http://localhost:3005"
+	@echo "  - access the web application at http://localhost:3006"
 	@echo "  - access the api documentation at http://localhost:4005/api"
 
 # Stop the application

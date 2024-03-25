@@ -8,7 +8,7 @@ defmodule GUS.Slug do
   @doc """
   Generates a random slug of a given length.
   """
-  @spec random(integer) :: String.t() | ArgumentError.t()
+  @spec random(integer) :: String.t() | ArgumentError
   def random(length \\ @mininum_length)
 
   def random(length) when length >= @mininum_length do

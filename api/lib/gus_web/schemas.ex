@@ -1,8 +1,12 @@
 defmodule GUSWeb.Schemas do
+  @moduledoc """
+  Schemas for the GUS OpenAPI spec
+  """
   require OpenApiSpex
   alias OpenApiSpex.Schema
 
   defmodule Link do
+    @moduledoc false
     OpenApiSpex.schema(%{
       title: "Link",
       description: "A mapping of a short slug to a URL",
@@ -22,6 +26,7 @@ defmodule GUSWeb.Schemas do
   end
 
   defmodule LinkRequest do
+    @moduledoc false
     OpenApiSpex.schema(%{
       title: "LinkRequest",
       description: "POST body for creating a link",
@@ -39,6 +44,7 @@ defmodule GUSWeb.Schemas do
   end
 
   defmodule LinkResponse do
+    @moduledoc false
     OpenApiSpex.schema(%{
       title: "LinkResponse",
       description: "The response to a successful link creation",
@@ -59,6 +65,7 @@ defmodule GUSWeb.Schemas do
   end
 
   defmodule LinksResponse do
+    @moduledoc false
     OpenApiSpex.schema(%{
       title: "LinksResponse",
       description: "Response for listing multiple links",
@@ -87,17 +94,24 @@ defmodule GUSWeb.Schemas do
   end
 
   defmodule VisitResponse do
+    @moduledoc false
     OpenApiSpex.schema(%{
       title: "VisitResponse",
       description: "The response to a successful visit creation",
       type: :object,
       properties: %{
-        data: %Schema{type: :object, properties: %{
-          visit: %Schema{type: :object, properties: %{
-            id: %Schema{type: :integer, description: "The unique identifier of the visit"},
-            url: %Schema{type: :string, description: "The URL to which the visit was made"},
-          }}
-        }}
+        data: %Schema{
+          type: :object,
+          properties: %{
+            visit: %Schema{
+              type: :object,
+              properties: %{
+                id: %Schema{type: :integer, description: "The unique identifier of the visit"},
+                url: %Schema{type: :string, description: "The URL to which the visit was made"}
+              }
+            }
+          }
+        }
       },
       example: %{
         "data" => %{
